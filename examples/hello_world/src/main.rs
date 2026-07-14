@@ -1,3 +1,5 @@
+use std::usize;
+
 fn basics() {
     let x1: i8 = 4;
     println!("x1 = {}", x1);
@@ -132,28 +134,103 @@ fn ownership() {
         stringa.push_str(">>>");
     }
 
+    fn processa(stringa: &mut String) -> () {
+        stringa.insert_str(0, "*");
+        stringa.push_str("*");
+    }
+
     let mut nome: String = String::from("Ettore");
 
     completa(&mut nome);
+    processa(&mut nome);
 
     let nome = saluta(nome);
 
     println!("Fatto uso di [{nome}]");
 }
 
+fn slices() {
+    //                                  ....:....1....:....2....:....3
+    let message = String::from("The Quick Brown Fox jumped.");
+    println!("{message}");
+    let quick = &message[4..10];
+    println!("{quick}");
+
+    let nipoti: [String; 10] = [
+        String::from("qui"),
+        String::from("quo"),
+        String::from("qua"),
+        String::from("_"),
+        String::from("_"),
+        String::from("_"),
+        String::from("_"),
+        String::from("_"),
+        String::from("_"),
+        String::from("_"),
+    ];
+
+    fn indexofelement(list: &[String; 10], what: &String) -> Option<usize> {
+        for (index, element) in list.iter().enumerate() {
+            if element.eq(what) {
+                return Some(index);
+            }
+        }
+        return None;
+    }
+
+    println!("{primi:#?}", primi = &nipoti[0..2]);
+
+    let cosa: String = String::from("quo");
+    let dove = indexofelement(&nipoti, &cosa);
+    println!("{cosa:#?}{indice:#?}", indice = dove);
+}
+
+fn trim_challenge() {
+    fn trim_spaces(raw: &str) -> &str {
+        let mut start: usize = 0;
+        let mut end: usize = raw.len();
+
+        for c in raw.chars() {
+            if c != ' ' {
+                break;
+            }
+            start += 1;
+        }
+
+        for c in raw.chars().rev() {
+            if c != ' ' {
+                break;
+            }
+            end -= 1;
+        }
+
+        return &raw[start..end];
+    }
+
+    let raw: String = String::from("  The Quick     brown     fox       ");
+    let trimmed = trim_spaces(&raw[1..]);
+
+    println!("trim_spaces({raw:?}) = {trimmed:?}");
+}
+
 fn main() {
-    let do_basics = false;
-    if do_basics {
+    if false {
         basics();
     }
 
-    let do_control = false;
-    if do_control {
+    if false {
         control();
     }
 
-    let do_ownership = true;
-    if do_ownership {
+    if false {
         ownership();
+    }
+
+    if false {
+        slices()
+    }
+
+    if true {
+        trim_challenge()
     }
 }
