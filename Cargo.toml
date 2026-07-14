@@ -2,5 +2,5 @@
 resolver="3"
 
 members = [
-    "examples/hello_world",
+    "examples/hello_world", "examples/use_modules",
 ]
