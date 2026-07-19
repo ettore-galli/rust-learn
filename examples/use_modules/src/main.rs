@@ -58,6 +58,72 @@ fn guess_game() {
     game_main();
 }
 
+fn args() {
+    use std::env;
+    let args: Vec<String> = env::args().collect();
+
+    match args.len() {
+        1 => {
+            eprintln!("un po' pochino");
+        }
+        2 => {
+            eprintln!("un po' pochino");
+        }
+        3 => {
+            eprintln!("un po' pochino");
+        }
+        4 => {
+            let a = &args[1];
+            let b = &args[2];
+            let c = &args[3];
+            println!("-----");
+            println!("[{a}] - [{b}] - [{c}]");
+            println!("-----");
+        }
+        _ => {}
+    }
+    // for arg in env::args() {
+    //     println!("* {arg}");
+    // }
+}
+
+fn files() {
+    use std::env;
+    use std::fs;
+    use std::io::Write;
+
+    const FILENAME: &str = "data/afile.txt";
+
+    println!("{p}", p = env::current_dir().unwrap().to_string_lossy());
+
+    fn display_file(fqn: &str) -> () {
+        match fs::read_to_string(fqn) {
+            Ok(content) => {
+                for line in content.lines() {
+                    println!(". {line}");
+                }
+            }
+            Err(error) => {
+                println!("{error}")
+            }
+        }
+    }
+
+    fn append_to_file(fqn: &str, line: &str) -> () {
+        match fs::OpenOptions::new().append(true).open(fqn) {
+            Ok(mut file_pointer) => {
+                let _ = file_pointer.write(line.as_bytes());
+            }
+            Err(error) => {
+                println!("{error}");
+            }
+        }
+    }
+    display_file(FILENAME);
+    append_to_file(FILENAME, "hello");
+    display_file(FILENAME)
+}
+
 fn main() {
     if false {
         stdinput();
@@ -65,7 +131,13 @@ fn main() {
     if false {
         random();
     }
-    if true {
+    if false {
         guess_game();
+    }
+    if false {
+        args();
+    }
+    if true {
+        files();
     }
 }
