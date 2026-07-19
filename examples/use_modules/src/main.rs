@@ -124,6 +124,48 @@ fn files() {
     display_file(FILENAME)
 }
 
+fn check_file() -> () {
+    fn get_inputs() -> (String, String) {
+        use std::env;
+        let mut args = env::args().skip(1);
+
+        match (args.next(), args.next()) {
+            (Some(file), Some(search)) => {
+                return (file, search);
+            }
+            _ => {
+                eprintln!("E' richiesto esattamente 2 parametri");
+                return (String::new(), String::new());
+            }
+        }
+    }
+    fn check_in_file(file: &str, search: &str) -> Result<usize, String> {
+        use std::fs;
+
+        match fs::read_to_string(file) {
+            Ok(content) => {
+                for (index, line) in content.lines().enumerate() {
+                    if line.contains(search) {
+                        return Ok(index);
+                    }
+                }
+                return Err(String::from("Non trovato"));
+            }
+            Err(error) => {
+                return Err(error.to_string());
+            }
+        }
+    }
+
+    fn mainline() {
+        let (file, search) = get_inputs();
+        let result = check_in_file(&file, &search);
+        println!("file={file} search={search}, result={result:?}");
+    }
+
+    mainline();
+}
+
 fn main() {
     if false {
         stdinput();
@@ -137,7 +179,11 @@ fn main() {
     if false {
         args();
     }
-    if true {
+    if false {
         files();
+    }
+
+    if true {
+        check_file();
     }
 }
