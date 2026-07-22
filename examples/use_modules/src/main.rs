@@ -166,6 +166,53 @@ fn check_file() -> () {
     mainline();
 }
 
+fn structs() {
+    #[derive(Debug)]
+    struct Rectangle {
+        width: f64,
+        height: f64,
+    }
+    impl Rectangle {
+        fn get_area(&self) -> f64 {
+            self.width * self.height
+        }
+
+        fn scale(&mut self, factor: f64) -> () {
+            self.width = self.width * factor;
+            self.height = self.height * factor;
+        }
+
+        fn new(w: f64, h: f64) -> Rectangle {
+            Rectangle {
+                width: w,
+                height: h,
+            }
+        }
+    }
+
+    let mut r1 = Rectangle::new(3.0, 4.0);
+    assert_eq!(r1.get_area(), 12.0);
+    r1.scale(2.0);
+    assert_eq!(r1.get_area(), 48.0);
+    println!("{r1:?}");
+
+    use core::ops::Add;
+    use core::ops::Div;
+    use std::fmt::Debug;
+    use std::str::FromStr;
+
+    fn media<T>(a: T, b: T) -> T
+    where
+        T: Add<Output = T> + Div<Output = T> + FromStr + Debug,
+        <T as FromStr>::Err: Debug,
+    {
+        let two: T = String::from("2").parse().unwrap();
+        (a + b) / two
+    }
+    println!("{m}", m = media::<u8>(3, 4));
+    println!("{m}", m = media::<f64>(3.0, 4.0));
+}
+
 fn main() {
     if false {
         stdinput();
@@ -183,7 +230,11 @@ fn main() {
         files();
     }
 
-    if true {
+    if false {
         check_file();
+    }
+
+    if true {
+        structs()
     }
 }
