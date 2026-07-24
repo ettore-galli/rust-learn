@@ -213,6 +213,21 @@ fn structs() {
     println!("{m}", m = media::<f64>(3.0, 4.0));
 }
 
+fn sum_boxes_challenge() {
+    use core::ops::Add;
+
+    fn sum_boxes<T: Add<Output = T>>(a: Box<T>, b: Box<T>) -> Box<T> {
+        let result = *a + *b;
+        return Box::new(result);
+    }
+
+    println!("{s}", s = sum_boxes::<u8>(Box::new(3), Box::new(4)));
+    println!(
+        "{s}",
+        s = sum_boxes::<f64>(Box::new(3.1415), Box::new(2.7182))
+    );
+}
+
 fn main() {
     if false {
         stdinput();
@@ -234,7 +249,11 @@ fn main() {
         check_file();
     }
 
-    if true {
+    if false {
         structs()
+    }
+
+    if true {
+        sum_boxes_challenge()
     }
 }
