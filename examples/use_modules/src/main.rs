@@ -1,3 +1,5 @@
+use std::fmt::Formatter;
+
 fn stdinput() {
     use std::io;
 
@@ -228,6 +230,52 @@ fn sum_boxes_challenge() {
     );
 }
 
+fn display_trait() {
+    use std::fmt::Display;
+    use std::fmt::Error;
+
+    struct Satellite {
+        name: String,
+        speed: f64,
+    }
+
+    impl Display for Satellite {
+        fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
+            let _ = f.write_str("Satellite: Name: ");
+            let _ = f.write_str(&self.name);
+            let _ = f.write_str("; Speed: ");
+            let _ = f.write_str(&self.speed.to_string());
+
+            return Ok(());
+        }
+    }
+
+    let s1: Satellite = Satellite {
+        name: String::from("S1"),
+        speed: 3.14,
+    };
+
+    println!("{n}, {s}", n = s1.name, s = s1.speed);
+    println!("s1 --> {s1}");
+}
+
+fn lifetime() {
+    struct Coso<'a> {
+        nome: &'a str,
+    }
+
+    impl<'a, 'b> Coso<'a> {
+        fn sndmsg(&'a self, msg: &'b str) -> &'b str {
+            println!("from {n}: {msg}", n = self.nome);
+            msg
+        }
+    }
+
+    let c1 = Coso { nome: "aaaa" };
+
+    let mt = c1.sndmsg("Hello");
+    println!("mt={mt}");
+}
 fn main() {
     if false {
         stdinput();
@@ -253,7 +301,15 @@ fn main() {
         structs()
     }
 
-    if true {
+    if false {
         sum_boxes_challenge()
+    }
+
+    if false {
+        display_trait()
+    }
+
+    if true {
+        lifetime();
     }
 }
