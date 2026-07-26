@@ -276,6 +276,93 @@ fn lifetime() {
     let mt = c1.sndmsg("Hello");
     println!("mt={mt}");
 }
+
+fn use_enum() {
+    #[derive(Debug)]
+    enum Location {
+        Unknown,
+        Anonymous,
+        Position { latitude: f64, longitude: f64 },
+    }
+
+    impl Location {
+        fn display(self) -> String {
+            match &self {
+                Location::Unknown => String::from("Unknown"),
+                Location::Anonymous => String::from("Anonymous /o|o\\"),
+                Location::Position {
+                    latitude,
+                    longitude,
+                } => {
+                    let mut descr: String = String::from("Position: ");
+                    descr.push_str(&latitude.to_string());
+                    descr.push_str(&longitude.to_string());
+                    descr
+                }
+            }
+        }
+    }
+
+    let l1 = Location::Unknown;
+    let l2 = Location::Anonymous;
+    let l3 = Location::Position {
+        latitude: 72.0,
+        longitude: 45.0,
+    };
+
+    println!("l1 = { }", l1.display());
+    println!("l2 = { }", l2.display());
+    println!("l3 = { }", l3.display());
+}
+
+fn guess_game_v2() {
+    use rand::random_range;
+    use std::io;
+    use std::num::ParseIntError;
+
+    fn output_message(message: &str) -> () {
+        println!("{message}");
+    }
+
+    type NumberFormat = u8;
+
+    fn get_user_number() -> NumberFormat {
+        loop {
+            let mut buffer = String::new();
+            let _ = io::stdin().read_line(&mut buffer);
+            let parse_result = buffer.trim().parse::<NumberFormat>();
+            match parse_result {
+                Ok(number) => return number,
+                Err(e) => {
+                    println!("Errore: {}", e);
+                }
+            }
+        }
+    }
+
+    fn game_main() -> () {
+        output_message("Indovina il numero");
+
+        let numero: u8 = random_range(1..101);
+
+        loop {
+            let tentativo = get_user_number();
+
+            if tentativo < numero {
+                output_message("più alto");
+            } else if tentativo > numero {
+                output_message("più basso");
+            } else {
+                if tentativo == numero {
+                    output_message("Indovinato!!!");
+                    break;
+                }
+            }
+        }
+    }
+    game_main();
+}
+
 fn main() {
     if false {
         stdinput();
@@ -309,7 +396,15 @@ fn main() {
         display_trait()
     }
 
-    if true {
+    if false {
         lifetime();
+    }
+
+    if false {
+        use_enum();
+    }
+
+    if true {
+        guess_game_v2();
     }
 }
