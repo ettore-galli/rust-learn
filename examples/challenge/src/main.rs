@@ -385,7 +385,9 @@ fn get_file_content(filename: &str) -> Result<String, String> {
         Err(error) => Err(error.to_string()),
     }
 }
+
 use std::collections::HashMap;
+
 fn count_words(content: &str) -> HashMap<&str, u32> {
     let mut word_map = HashMap::new();
 
@@ -395,6 +397,13 @@ fn count_words(content: &str) -> HashMap<&str, u32> {
     }
 
     word_map
+}
+
+fn most_common_words<'a>(word_map: &HashMap<&'a str, u32>) -> Vec<(&'a str, u32)> {
+    let mut vec: Vec<(&'a str, u32)>  = word_map.iter().map(|(k, v)| (*k, *v)).collect();
+    vec.sort_by_key(|(_, v)| *v);
+
+    vec
 }
 
 fn main() {
@@ -407,7 +416,10 @@ fn main() {
                 Err(err) => println!("ERRORE: {}", err),
                 Ok(content) => {
                     let word_map = count_words(&content);
-                    println!("{:?}", word_map);
+                    let most_common = most_common_words(&word_map);
+                    let slice = most_common.as_slice();
+                    let lasts = &slice[slice.len().saturating_sub(5)..];
+                    println!("{:?}", lasts);
                 }
             }
         }
