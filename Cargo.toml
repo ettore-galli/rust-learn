@@ -1,4 +1,9 @@
 [workspace]
 resolver = "3"
 
-members = ["examples/hello_world", "examples/use_modules", "examples/challenge"]
+members = [
+    "examples/hello_world",
+    "examples/use_modules",
+    "examples/challenge",
+    "examples/experiments-1",
+]
